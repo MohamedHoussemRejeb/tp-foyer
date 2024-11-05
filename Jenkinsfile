@@ -1,11 +1,21 @@
 pipeline {
     agent any
+    environment {
+        PATH = "/usr/local/bin:${env.PATH}"
+    }
 
     stages {
         stage('Checkout') {
             steps {
                 echo 'Clonage du dépôt Git...'
                 git url: 'https://github.com/MohamedHoussemRejeb/tp-foyer.git', branch: 'main'
+            }
+        }
+        
+        stage('Check PATH') {
+            steps {
+                echo 'Vérification du chemin d\'accès...'
+                sh 'echo $PATH'
             }
         }
 
