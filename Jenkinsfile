@@ -30,6 +30,7 @@ pipeline {
                 withSonarQubeEnv('sq1') {
                     // Remplacez 'sonar:sonar' par le nom correct du scanner SonarQube
                     sh 'mvn sonar:sonar -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_1b70e0ff93897e6014af3777939e45e8efd8b0de'
+                } // Fermez l'accolade ici
             }
         }
 
