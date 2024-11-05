@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // Variables d'environnement pour SonarQube
-        SONARQUBE_SERVER = 'sq1' // Nom du serveur SonarQube configuré dans Jenkins
-        SONAR_TOKEN = 'squ_1b70e0ff93897e6014af3777939e45e8efd8b0de' // Jeton d'authentification SonarQube
-    }
-
     stages {
         stage('Checkout') {
             steps {
