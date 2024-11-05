@@ -28,7 +28,7 @@ pipeline {
             steps {
                 echo 'Analyse du projet avec SonarQube...'
                 withSonarQubeEnv('sq1') {
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_1b70e0ff93897e6014af3777939e45e8efd8b0de'
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_eb2921c0eb4985ea0933ed9e5e9f4ad1487b554d'
                 }
             }
         }
