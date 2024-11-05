@@ -35,32 +35,29 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 echo 'Déploiement du projet sur Nexus...'
-                nexusArtifactUploader artifacts: [[artifactId: 'tp-foyer', classifier: '', file: 'target/tp-foyer-5.0.0.war', type: 'war']], credentialsId: 'nexus3', groupId: 'tn.esprit', nexusUrl: '111.111.111.125:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://111.111.111.125:8081/repository/tpfoyer-release/', version: '5.0.0'
+                nexusArtifactUploader artifacts: [[artifactId: 'tp-foyer', classifier: '', file: 'target/tp-foyer-5.0.0.jar', type: 'jar']], credentialsId: 'nexus3', groupId: 'tn.esprit', nexusUrl: '111.111.111.125:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://111.111.111.125:8081/repository/tpfoyer-release/', version: '5.0.0'
             }
         }
 
-        stage('DOCKER IMAGE') {
-            steps {
-                echo 'Construction de l\'image Docker...'
-                sh 'docker build -t mohamedhoussemrejeb/tp-foyer:5.0.0 .'
-            }
+        stage('DOCKER IMAGE') {             
+            steps {                 
+                sh 'docker build -t mohamedhoussemrejeb/tp-foyer:5.0.0 .'             
+            }         
         }
-
-        stage('DOCKER HUB') {
-            steps {
-                echo 'Push de l\'image Docker vers Docker Hub...'
-                sh '''
-                    docker login -u mohamedhoussemrejeb -p 201JMT1370
-                    docker push mohamedhoussemrejeb/tp-foyer:5.0.0
-                '''
-            }
-        }
-
-        stage('DOCKER-COMPOSE') {
-            steps {
-                echo 'Démarrage des services avec Docker Compose...'
-                sh 'docker-compose up -d'
-            }
+        
+        stage('DOCKER HUB') {             
+            steps {                 
+                sh '''                 
+                    docker login -u mohamedhoussemrejeb -p 201JMT1370                   
+                    docker push mohamedhoussemrejeb/tp-foyer:5.0.0                 
+                '''             
+            }         
+        }         
+        
+        stage('DOCKER-COMPOSE') {             
+            steps {                 
+                sh 'docker-compose up -d'             
+            }         
         }
     }
 
@@ -73,4 +70,3 @@ pipeline {
         }
     }
 }
-
