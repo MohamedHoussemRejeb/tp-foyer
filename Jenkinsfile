@@ -28,9 +28,8 @@ pipeline {
             steps {
                 echo 'Analyse du projet avec SonarQube...'
                 withSonarQubeEnv('sq1') {
-                    // Remplacez 'sonar:sonar' par le nom correct du scanner SonarQube
                     sh 'mvn sonar:sonar -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_1b70e0ff93897e6014af3777939e45e8efd8b0de'
-                } // Fermez l'accolade ici
+                }
             }
         }
 
@@ -38,7 +37,7 @@ pipeline {
         stage("Quality Gate") {
             steps {
                 script {
-                    timeout(time: 5, unit: 'MINUTES') {
+                    timeout(time: 10, unit: 'MINUTES') {
                         waitForQualityGate abortPipeline: true
                     }
                 }
@@ -52,10 +51,11 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Nexus') {
             steps {
-                echo 'Déploiement du projet...'
-                // Ajouter ici les étapes de déploiement si nécessaires
+                echo 'Déploiement du projet sur Nexus...'
+                // Déployer le livrable sur Nexus tout en skippant les tests
+                sh 'mvn deploy -DskipTests'
             }
         }
     }
