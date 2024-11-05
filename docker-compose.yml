@@ -1,0 +1,26 @@
+services:
+  tp-foyer:
+    build:
+      context: .  # Spécifie le répertoire où se trouve votre Dockerfile
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://docker-mysql:3306/db?autoReconnect=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    ports:
+      - "8089:8089"  # Expose le port 8089
+    depends_on:
+      - docker-mysql  # Assure que MySQL démarre avant cette application
+    restart: always  # Redémarre le conteneur automatiquement en cas de besoin
+
+  docker-mysql:
+    image: "mysql:5.6"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root  # Pas de mot de passe pour root
+      - MYSQL_DATABASE=db  # Crée la base de données 'rahmaf'
+    ports:
+      - "3307:3306"  # Mappe le port 3307 du système hôte au port 3306 du conteneur
+    volumes:
+      - mysql-data:/var/lib/mysql  # Garde les données MySQL même après l'arrêt du conteneur
+volumes:
+  mysql-data:
