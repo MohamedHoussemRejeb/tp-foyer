@@ -1,54 +1,73 @@
 pipeline {
-    agent any // Utilise n'importe quel agent disponible
+    agent any
+
+    environment {
+        // Variables d'environnement pour SonarQube
+        SONARQUBE_SERVER = 'sq1' // Nom du serveur SonarQube configuré dans Jenkins
+        SONAR_TOKEN = 'squ_1b70e0ff93897e6014af3777939e45e8efd8b0de' // Jeton d'authentification SonarQube
+    }
 
     stages {
-        // Étape de clonage du dépôt Git
         stage('Checkout') {
             steps {
                 echo 'Clonage du dépôt Git...'
-                // Clonage du dépôt depuis GitHub
                 git url: 'https://github.com/MohamedHoussemRejeb/tp-foyer.git', branch: 'main'
             }
         }
 
-        // Étape de construction du projet
         stage('Build') {
             steps {
                 echo 'Construction du projet avec Maven...'
-                // Commande Maven pour nettoyer et construire le projet
                 sh 'mvn clean install'
             }
         }
 
-        // Étape de tests
         stage('Test') {
             steps {
                 echo 'Exécution des tests...'
-                // Commande Maven pour exécuter les tests
                 sh 'mvn test'
             }
         }
 
-        // Étape de packaging
+        // Étape d'analyse SonarQube
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Récupération de l'outil SonarQube Scanner
+                    def scannerHome = tool 'SonarQube Scanner'
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=tp-foyer -Dsonar.sources=. -Dsonar.login=${SONAR_TOKEN}"
+                    }
+                }
+            }
+        }
+
+        // Contrôle de la Quality Gate
+        stage("Quality Gate") {
+            steps {
+                script {
+                    timeout(time: 5, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
+            }
+        }
+
         stage('Package') {
             steps {
                 echo 'Packaging du projet...'
-                // Commande Maven pour empaqueter le projet
                 sh 'mvn package'
             }
         }
 
-        // Étape de déploiement
         stage('Deploy') {
             steps {
                 echo 'Déploiement du projet...'
-                // Ajouter ici les étapes de déploiement si nécessaires, ex: copier des fichiers de package
-                // Exemple : sh 'cp target/mon-projet.war /path/vers/le/deploiement/'
+                // Ajouter ici les étapes de déploiement si nécessaires
             }
         }
     }
 
-    // Optionnel : ajouter des étapes de post-build
     post {
         success {
             echo 'Le pipeline s\'est exécuté avec succès!'
