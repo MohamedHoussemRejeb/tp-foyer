@@ -32,13 +32,10 @@ pipeline {
         // Étape d'analyse SonarQube
         stage('SonarQube Analysis') {
             steps {
-                script {
-                    // Récupération de l'outil SonarQube Scanner
-                    def scannerHome = tool 'SonarQube Scanner'
-                    withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=tp-foyer -Dsonar.sources=. -Dsonar.login=${SONAR_TOKEN}"
-                    }
-                }
+                echo 'Analyse du projet avec SonarQube...'
+                withSonarQubeEnv('sq1') {
+                    // Remplacez 'sonar:sonar' par le nom correct du scanner SonarQube
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=tp-foyer -Dsonar.host.url=http://localhost:9000 -Dsonar.login=squ_1b70e0ff93897e6014af3777939e45e8efd8b0de'
             }
         }
 
