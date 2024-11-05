@@ -41,6 +41,24 @@ nexusArtifactUploader artifacts: [[artifactId: 'tp-foyer', classifier: '', file:
             }
         }
     }
+stage('DOCKER IMAGE') {             
+            steps {                 
+                sh 'docker build -t mohamedhoussemrejeb/tp-foyer:5.0.0 .'             
+            }         
+        }
+        stage('DOCKER HUB') {             
+            steps {                 
+                sh '''                 
+                    docker login -u mohamedhoussemrejeb -p 201JMT1370                   
+                    docker push mohamedhoussemrejeb/tp-foyer:5.0.0                 
+                '''             
+            }         
+        }         
+        stage('DOCKER-COMPOSE') {             
+            steps {                 
+                sh 'docker-compose up -d'             
+            }         
+        }
 
     post {
         success {
