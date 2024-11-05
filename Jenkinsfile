@@ -37,7 +37,7 @@ pipeline {
             steps {
                 echo 'Déploiement du projet sur Nexus...'
                 // Déployer le livrable sur Nexus 
-nexusArtifactUploader artifacts: [[artifactId: 'tp-foyer', classifier: '', file: 'target/tp-foyer-5.0.0.war', type: 'war']], credentialsId: 'nexus3', groupId: 'tn.esprit', nexusUrl: '111.111.111.125:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'tpfoyer-release', version: '5.0.0'
+nexusArtifactUploader artifacts: [[artifactId: 'tp-foyer', classifier: '', file: 'target/tp-foyer-5.0.0.jar', type: 'jar']], credentialsId: 'nexus3', groupId: 'tn.esprit', nexusUrl: '111.111.111.125:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'tpfoyer-release', version: '5.0.0'
             }
         }
     }
