@@ -41,22 +41,22 @@ pipeline {
 
         stage('DOCKER IMAGE') {             
             steps {                 
-                sh 'docker build -t mohamedhoussemrejeb/tp-foyer .'             
+                sh ' sudo docker build -t mohamedhoussemrejeb/tp-foyer .'             
             }         
         }
         
         stage('DOCKER HUB') {             
             steps {                 
                 sh '''                 
-                    docker login -u mohamedhoussemrejeb -p 201JMT1370                   
-                    docker push mohamedhoussemrejeb/tp-foyer                 
+                    sudo docker login -u mohamedhoussemrejeb -p 201JMT1370                   
+                    sudo docker push mohamedhoussemrejeb/tp-foyer                 
                 '''             
             }         
         }         
         
         stage('DOCKER-COMPOSE') {             
             steps {                 
-                sh 'docker-compose up -d'             
+                sh 'sudo docker-compose up -d'             
             }         
         }
     }
